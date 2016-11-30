@@ -1,0 +1,20 @@
+require 'handy_toolbox/version'
+require 'handy_toolbox/ids'
+require 'handy_toolbox/keys'
+require 'handy_toolbox/cmd'
+require 'handy_toolbox/ui'
+require 'handy_toolbox/loader'
+require 'handy_toolbox/plugin'
+require 'handy_toolbox/menu_back'
+require 'handy_toolbox/menu'
+require 'handy_toolbox/menu_loader'
+require 'handy_toolbox/tool_menu_item'
+require 'handy_toolbox/tool'
+require 'handy_toolbox/tool_runner'
+require 'handy_toolbox/navigator'
+require 'handy_toolbox/scroll'
+require 'handy_toolbox/screen'
+require 'handy_toolbox/app'
+
+module HandyToolbox
+end
