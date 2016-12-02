@@ -3,11 +3,11 @@ module HandyToolbox
   class App
     attr_reader :title
 
-    def initialize(title: "Tools")
+    def initialize(title: "Tools", default_colors: false)
       @title = title
       @loop = true
       @builder = Menu.new(nil, nil)
-      @screen = Screen.new
+      @screen = Screen.new(default_colors: default_colors)
       @navigator = Navigator.new
       @tool_runner = ToolRunner.new
       @positions = {}
@@ -21,7 +21,7 @@ module HandyToolbox
 
         while @loop
           screen.draw do
-            draw_title
+            screen.header(title)
             draw_tools
           end
           handle_input
@@ -94,17 +94,8 @@ module HandyToolbox
       end
     end
 
-    def draw_title
-      horizontal_line = "-" * (title.size + 4)
-      padded_title = "| #{title} |"
-
-      screen.text_at(0, 0, horizontal_line)
-      screen.text_at(0, 1, padded_title)
-      screen.text_at(0, 2, horizontal_line)
-    end
-
     def draw_tools
-      y = 4
+      y = 2
       longest = find_longest_child_name
       @positions = {}
       current.children.each_with_index do |child|
@@ -119,14 +110,14 @@ module HandyToolbox
             if is_multiline
               Ui.dim do
                 text = format_desc(str[1])
-                screen.text_at(2, y + 1, text)
+                screen.text_at(1, y + 1, text)
               end
               text = format_child_name(child.icon, str[0], longest)
-              screen.text_at(2, y + 2, text)
+              screen.text_at(1, y + 2, text)
               @positions[child.id] = y + 2
             else
               text = format_child_name(child.icon, str, longest)
-              screen.text_at(2, y, text)
+              screen.text_at(1, y, text)
               @positions[child.id] = y
             end
           end
@@ -141,11 +132,11 @@ module HandyToolbox
     end
 
     def format_desc(str)
-      "     # #{str}"
+      "    # #{str}"
     end
 
     def format_child_name(icon, name, max_len)
-      "  #{icon}#{name.ljust(max_len, ' ')}  "
+      " #{icon}#{name.ljust(max_len, ' ')} "
     end
 
     def find_longest_child_name

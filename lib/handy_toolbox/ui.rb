@@ -31,6 +31,12 @@ module HandyToolbox
       highlight_off if condition
     end
 
+    def self.reverse
+      attr_on Curses::A_REVERSE
+      yield
+      attr_off Curses::A_REVERSE
+    end
+
     def self.dim_on
       attr_on Curses::A_DIM
     end

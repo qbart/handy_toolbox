@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "handy_toolbox"
+include HandyToolbox
+
+
+class RakeLoader < Loader
+  def on_load(node)
+    data = IO.read('fixtures/rakes.txt')
+    data.strip.split("\n").each do |rake|
+      name, desc = rake.split("#")
+      node.tool name.strip, desc: desc.strip
+    end
+  end
+end
+
+class RailsDatabasePlugin < Plugin
+  def on_attach(node)
+    node.menu 'Database' do |db|
+      db.tool 'rails db:migrate', name: 'Migrate database'
+      db.tool 'rails db:test:prepare', name: 'Prepare test database'
+    end
+  end
+end
+
+
+branch = Cmd.exec('git branch').match(/^\* (?<name>.+)$/)[:name]
+app = App.new(
+  title: "My project name (on #{branch})"#,
+  # default_colors: true
+)
+
+app.menu 'Quick' do |quick|
+  quick.menu 'Some'
+  quick.tool 'ls -la', desc: 'Lists current directory'
+end
+
+app.menu 'Rails' do |rails|
+  rails.plugin RailsDatabasePlugin
+  rails.menu_loader 'Rake', RakeLoader
+  rails.menu 'Assets' do |assets|
+    assets.tool 'rake assets:precompile', desc: 'Precompile all the assets'
+  end
+end
+
+app.menu 'Deployment' do |deploy|
+  deploy.tool 'cap staging deploy', name: 'Deploy to staging'
+  deploy.tool 'cap production deploy', name: 'Deploy to production'
+end
+
+app.run

@@ -7,12 +7,14 @@ HandyToolbox is a text based user interface that will help you with every day ta
 
 Gem was built for the Rails apps in mind but can be used standalone as well and not only for Ruby related stuff.
 
+View [changelog](CHANGELOG.md).
+
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'handy_toolbox'
+gem 'handy_toolbox', require: false
 ```
 
 And then execute:
@@ -39,6 +41,14 @@ include HandyToolbox
 app = App.new(title: 'Project name')
 # your config
 app.run
+```
+
+If you want to use your default terminal colors you can pass extra option to app:
+
+```ruby
+app = App.new(
+  default_colors: true # default is false
+)
 ```
 
 ### Defining your tasks
@@ -178,11 +188,9 @@ home / end - go to first/last item
 
 ![Main menu](promo/1.png?raw=true)
 
-![Quick tasks](promo/2.png?raw=true)
+![Simple tasks](promo/2.png?raw=true)
 
-![Nested menu with loader not executed yet](promo/3.png?raw=true)
-
-![Loaded data from loader](promo/4.png?raw=true)
+![Long tasks](promo/3.png?raw=true)
 
 ## TODO
 
